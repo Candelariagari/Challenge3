@@ -1,11 +1,8 @@
 #! /usr/bin/env php
 
 <?php
+use Acme\ShowCommand;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-
 
 require 'vendor/autoload.php';
 
@@ -28,13 +25,7 @@ catch (Exception $exception){
 $dbAdapter = new Acme\DatabaseAdapter($pdo);
 
 $app->add(new Acme\ShowCommand($dbAdapter)); //pass the adapter to the showcommand*/
+$app->add(new ShowCommand);
 
-$app->register('show')
-    ->addArgument('movieTitle', InputArgument::REQUIRED, 'Title of movie to provide information.')
-    ->setCode(function(InputInterface $input, OutputInterface $output){
-        $movieTitle = $input->getArgument('movieTitle');
-        $output->writeln('<info> Movie: ' . $movieTitle . ' - Year: ... </info>');
-    })
-    ->setDescription('Shows information about the movie.');
 
 $app->run();
