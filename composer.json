@@ -2,5 +2,10 @@
     "require": {
         "guzzlehttp/guzzle": "^7.5.0",
         "symfony/console": "^6.2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Acme\\": "src"
+        }
     }
 }
