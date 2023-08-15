@@ -10,7 +10,7 @@ class ShowCommand extends Command {
 
     private $database;
 
-    public function __construct(DatabaseAdapter $database){
+    public function __construct(DatabaseAdapter $database){ /*We accept the database received */
         $this->database = $database;
         parent::__construct();
     }
@@ -25,10 +25,11 @@ class ShowCommand extends Command {
     }
 
     private function showInformation(OutputInterface $output){
-        $info = $this->database->fetchAll('info');
+        $info = $this->database->fetchAll('info'); /*fetch all information form the database*/
         $table = new Table($output);
 
-        $table->setRows($info)
+        $table->setHeaders(['Title', 'Description']) /*No lleva headers, puse para probar */
+            ->setRows($info)
             ->render();
     
     }
