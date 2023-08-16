@@ -12,21 +12,30 @@ class ShowCommand extends Command {
     public function configure(){
         $this->setName('show')
             ->setDescription('Shows information about the movie.')
-            ->addArgument('movieTitle', InputArgument::REQUIRED, 'Title of movie to provide information.');
+            ->addArgument('movieTitle', InputArgument::REQUIRED, 'Title of movie to provide information.')
+            ->addOption('fullPlot', null,  InputOption::VALUE_OPTIONAL, 'Show the fullplot of the movie.', 'short'); //el ultimo full seria el default value para el plot
     }
 
     public function execute(InputInterface $input, OutputInterface $output){
 
         $movieTitle = $input->getArgument('movieTitle');
-    
-        $information = $this->getInformation($movieTitle);
+        $plot = $this->getPlot($input);
+        $information = $this->getInformation($movieTitle, $plot);
         $this->showInformation($information, $output);
         return 0; 
-    } 
-    
-    private function getInformation($movieTitle){ 
-        $apikey = "6750a9de";
+    }
+
+    public function getPlot(InputInterface $input){
         $plot = "short";
+        $fullPlot = $input->getOption('fullPlot');
+        if ($fullPlot){
+            $plot = "full";
+        }
+        return $plot;
+    }
+    
+    private function getInformation($movieTitle, $plot){ 
+        $apikey = "6750a9de";
         $data = "https://www.omdbapi.com/?t={$movieTitle}&plot={$plot}&apikey={$apikey}";
         $information = json_decode(file_get_contents($data), true);
         
@@ -37,14 +46,13 @@ class ShowCommand extends Command {
         $output->writeln("<info>{$information['Title']} {$information['Year']}</info>");
 
         $this->showPlotInTable($information, $output);
-
+        
     }
 
     private function showPlotInTable($information, OutputInterface $output){
         $table = new Table($output);
 
-        $table->setHeaders(['Title', 'Description']); //No lleva headers, puse para probar 
-        
+    
         foreach($information as $key => $val){
              $table->addRow(["$key", "$val"]);
         }
