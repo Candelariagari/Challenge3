@@ -13,7 +13,7 @@ class ShowCommand extends Command {
         $this->setName('show')
             ->setDescription('Shows information about the movie.')
             ->addArgument('movieTitle', InputArgument::REQUIRED, 'Title of movie to provide information.')
-            ->addOption('fullPlot', null,  InputOption::VALUE_OPTIONAL, 'Show the fullplot of the movie.', 'short'); //el ultimo full seria el default value para el plot
+            ->addOption('fullPlot', null,  InputOption::VALUE_OPTIONAL, 'Show the fullplot of the movie.', 'short');
     }
 
     public function execute(InputInterface $input, OutputInterface $output){
@@ -53,8 +53,12 @@ class ShowCommand extends Command {
         $table = new Table($output);
 
         foreach($information as $key => $val){
-             $table->addRow(["$key", wordwrap("$val", 150, "\n", false)]);
+            if (is_array($val)) {
+                $val = json_encode($val);
+            }
+            $table->addRow([$key, wordwrap($val, 150, "\n", false)]);
         }
+    
         
         $table->render();
     }
