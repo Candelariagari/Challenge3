@@ -42,13 +42,6 @@ class ShowCommand extends Command {
         return $information;
     }
 
-    private function showInformation($information, OutputInterface $output){
-        $output->writeln("<info>{$information['Title']} {$information['Year']}</info>");
-
-        $this->showPlotInTable($information, $output);
-        
-    }
-
     private function showPlotInTable($information, OutputInterface $output){
         $table = new Table($output);
 
@@ -61,5 +54,11 @@ class ShowCommand extends Command {
     
         
         $table->render();
+    }
+
+    private function showInformation($information, OutputInterface $output){
+        $output->writeln("<info>{$information['Title']} {$information['Year']}</info>");
+
+        $this->showPlotInTable($information, $output);   
     }
 }
