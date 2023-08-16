@@ -25,6 +25,8 @@ class ShowCommand extends Command {
         $movieTitle = $input->getArgument('movieTitle');
         $message = 'Movie: ' .$movieTitle . ' - Year: ...';
         $output->writeln("<info>{$message}</info>");
+
+        return 0;
     }#    $this->showInformation($output);
     
 
