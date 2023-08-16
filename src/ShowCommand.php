@@ -8,13 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowCommand extends Command {
 
-    /*private $database;
-
-    public function __construct(DatabaseAdapter $database){ /*We accept the database received 
-        $this->database = $database;
-        parent::__construct();
-    }*/
-
     public function configure(){
         $this->setName('show')
             ->setDescription('Shows information about the movie.')
@@ -22,23 +15,34 @@ class ShowCommand extends Command {
     }
 
     public function execute(InputInterface $input, OutputInterface $output){
+
         $movieTitle = $input->getArgument('movieTitle');
-        $message = $movieTitle. ' - Year';
+    
+        $information = $this->getInformation($movieTitle);
+        $this->showInformation($information, $output);
+        return 0; //sin este return me da un error pidiendo que la funcion devuelva un int.
+    } 
+    
+    private function getInformation($movieTitle){ //y el año?
+        $apikey = "6750a9de";
+        $data = "https://www.omdbapi.com/?t={$movieTitle}&apikey={$apikey}";
+        $information = json_decode(file_get_contents($data), true);
         
-        $output->writeln("<info>{$message}</info>"."\n Table");
+        return $information;
+    }
 
-        return 0;
-    }#    $this->showInformation($output);
+    private function showInformation($information, OutputInterface $output){
+        
+        $output->writeln($information);
+        // $message = $movieTitle. ' - Year';
+        
+        // $output->writeln("<info>{$message}</info>");
+
+        // $table = new Table($output);
+
+        // $table->setHeaders(['Title', 'Description']) //No lleva headers, puse para probar 
+        //     ->setRows($information)
+        //     ->render();
     
-
-    /*private function showInformation(OutputInterface $output){
-        $info = $this->database->fetchAll('info'); /*fetch all information form the database
-        $table = new Table($output);
-
-        $table->setHeaders(['Title', 'Description']) /*No lleva headers, puse para probar 
-            ->setRows($info)
-            ->render();
-    
-    }*/
-
+    }
 }
