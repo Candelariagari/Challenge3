@@ -52,10 +52,10 @@ class ShowCommand extends Command {
     private function showPlotInTable($information, OutputInterface $output){
         $table = new Table($output);
 
-    
         foreach($information as $key => $val){
-             $table->addRow(["$key", "$val"]);
+             $table->addRow(["$key", wordwrap("$val", 150, "\n", false)]);
         }
+        
         $table->render();
     }
 }
