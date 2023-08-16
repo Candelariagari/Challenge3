@@ -23,8 +23,9 @@ class ShowCommand extends Command {
 
     public function execute(InputInterface $input, OutputInterface $output){
         $movieTitle = $input->getArgument('movieTitle');
-        $message = 'Movie: ' .$movieTitle . ' - Year: ...';
-        $output->writeln("<info>{$message}</info>");
+        $message = $movieTitle. ' - Year';
+        
+        $output->writeln("<info>{$message}</info>"."\n Table");
 
         return 0;
     }#    $this->showInformation($output);
