@@ -28,7 +28,7 @@ class ShowCommand extends Command {
     public function getPlot(InputInterface $input){
         $plot = "short";
         $fullPlot = $input->getOption('fullPlot');
-        if ($fullPlot){
+        if ($fullPlot == null){
             $plot = "full";
         }
         return $plot;
