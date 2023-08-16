@@ -27,5 +27,4 @@ $dbAdapter = new Acme\DatabaseAdapter($pdo);
 $app->add(new Acme\ShowCommand($dbAdapter)); //pass the adapter to the showcommand*/
 $app->add(new ShowCommand);
 
-
 $app->run();

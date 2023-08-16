@@ -1,9 +1,10 @@
 <?php namespace Acme;
 
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-#use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowCommand extends Command {
@@ -25,7 +26,8 @@ class ShowCommand extends Command {
     
     private function getInformation($movieTitle){ 
         $apikey = "6750a9de";
-        $data = "https://www.omdbapi.com/?t={$movieTitle}&apikey={$apikey}";
+        $plot = "short";
+        $data = "https://www.omdbapi.com/?t={$movieTitle}&plot={$plot}&apikey={$apikey}";
         $information = json_decode(file_get_contents($data), true);
         
         return $information;
@@ -33,16 +35,19 @@ class ShowCommand extends Command {
 
     private function showInformation($information, OutputInterface $output){
         $output->writeln("<info>{$information['Title']} {$information['Year']}</info>");
-        $output->writeln($information);
-        // $message = $movieTitle. ' - Year';
+
+        $this->showPlotInTable($information, $output);
+
+    }
+
+    private function showPlotInTable($information, OutputInterface $output){
+        $table = new Table($output);
+
+        $table->setHeaders(['Title', 'Description']); //No lleva headers, puse para probar 
         
-        // $output->writeln("<info>{$message}</info>");
-
-        // $table = new Table($output);
-
-        // $table->setHeaders(['Title', 'Description']) //No lleva headers, puse para probar 
-        //     ->setRows($information)
-        //     ->render();
-    
+        foreach($information as $key => $val){
+             $table->addRow(["$key", "$val"]);
+        }
+        $table->render();
     }
 }
