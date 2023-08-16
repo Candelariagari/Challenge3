@@ -20,10 +20,10 @@ class ShowCommand extends Command {
     
         $information = $this->getInformation($movieTitle);
         $this->showInformation($information, $output);
-        return 0; //sin este return me da un error pidiendo que la funcion devuelva un int.
+        return 0; 
     } 
     
-    private function getInformation($movieTitle){ //y el año?
+    private function getInformation($movieTitle){ 
         $apikey = "6750a9de";
         $data = "https://www.omdbapi.com/?t={$movieTitle}&apikey={$apikey}";
         $information = json_decode(file_get_contents($data), true);
@@ -32,7 +32,7 @@ class ShowCommand extends Command {
     }
 
     private function showInformation($information, OutputInterface $output){
-        
+        $output->writeln("<info>{$information['Title']} {$information['Year']}</info>");
         $output->writeln($information);
         // $message = $movieTitle. ' - Year';
         
